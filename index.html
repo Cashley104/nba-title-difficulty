@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NBA Title Difficulty</title>
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <p class="eyebrow">NBA championship difficulty index</p>
+      <h1>Easiest and Hardest NBA Titles</h1>
+      <p class="subhead">
+        A title difficulty rating based on playoff opponent injuries and season-long contender injury loss.
+      </p>
+      <button class="explain-button" id="explain-toggle" type="button" aria-expanded="false" aria-controls="explain-panel">
+        Stat Explained
+      </button>
+      <section class="explain-panel" id="explain-panel" hidden>
+        <h2 id="explain-title">Difficulty Rating Explained</h2>
+        <div id="methodology" class="method-basic"></div>
+      </section>
+    </section>
+
+    <section class="controls">
+      <label class="control-field">
+        <span>Search</span>
+        <input id="search-input" type="search" placeholder="Team or year">
+      </label>
+      <label class="control-field">
+        <span>Year Range</span>
+        <div class="range-row">
+          <input id="year-min" type="number" placeholder="2000">
+          <input id="year-max" type="number" placeholder="2025">
+        </div>
+      </label>
+    </section>
+
+    <section class="cards" id="summary-cards"></section>
+
+    <section class="table-block">
+      <div class="table-header">
+        <h2>Full Title Table</h2>
+        <p>Sorted by easiest difficulty rating</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th><button class="sort-btn" data-sort="year">Year</button></th>
+              <th><button class="sort-btn" data-sort="champion_name">Champion</button></th>
+              <th><button class="sort-btn" data-sort="simple_difficulty_index">Difficulty Rating</button></th>
+              <th><button class="sort-btn" data-sort="simple_playoff_score">Playoff Injury Rating</button></th>
+              <th><button class="sort-btn" data-sort="simple_contender_dropout_score">Total Season Injury Rating</button></th>
+            </tr>
+          </thead>
+          <tbody id="ranking-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <p class="source-note">
+      Data Sources: Basketball-Reference playoff and advanced season data and Pro Sports Transactions injury data.
+    </p>
+  </main>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
