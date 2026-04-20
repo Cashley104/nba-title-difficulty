@@ -163,6 +163,17 @@ h2 {
   line-height: 1.1;
 }
 
+.summary-title-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.summary-title-year {
+  font-size: 1rem;
+  color: var(--muted);
+}
+
 .card-note {
   color: var(--muted);
   font-size: 0.85rem;
@@ -245,6 +256,24 @@ th {
   font-size: 0.78rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.champion-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.champion-logo {
+  width: 20px;
+  height: 20px;
+  display: block;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+
+.champion-text {
+  display: inline-block;
 }
 
 .sort-btn {

@@ -4,6 +4,44 @@ const state = {
   sortDir: "asc",
 };
 
+const HISTORICAL_LOGOS = [
+  { start: 2000, end: 2000, champion: "LAL", file: "champion_logos_real/lakers-1976.png", label: "Lakers" },
+  { start: 2001, end: 2020, champion: "LAL", file: "champion_logos_real/lakers-2001.png", label: "Lakers" },
+  { start: 2003, end: 2014, champion: "SAS", file: "champion_logos_real/spurs-2002.png", label: "Spurs" },
+  { start: 2004, end: 2004, champion: "DET", file: "champion_logos_real/pistons-2001.png", label: "Pistons" },
+  { start: 2006, end: 2013, champion: "MIA", file: "champion_logos_real/heat-1999.png", label: "Heat" },
+  { start: 2008, end: 2024, champion: "BOS", file: "champion_logos_real/celtics-1996.png", label: "Celtics" },
+  { start: 2011, end: 2011, champion: "DAL", file: "champion_logos_real/mavericks-2001.png", label: "Mavericks" },
+  { start: 2015, end: 2018, champion: "GSW", file: "champion_logos_real/warriors-2010.png", label: "Warriors" },
+  { start: 2022, end: 2022, champion: "GSW", file: "champion_logos_real/warriors-2019.png", label: "Warriors" },
+  { start: 2016, end: 2016, champion: "CLE", file: "champion_logos_real/cavaliers-2010.png", label: "Cavaliers" },
+  { start: 2019, end: 2019, champion: "TOR", file: "champion_logos_real/raptors-2015.png", label: "Raptors" },
+  { start: 2021, end: 2021, champion: "MIL", file: "champion_logos_real/bucks-2015.png", label: "Bucks" },
+  { start: 2023, end: 2023, champion: "DEN", file: "champion_logos_real/nuggets-2018.png", label: "Nuggets" },
+  { start: 2025, end: 2025, champion: "OKC", file: "champion_logos_real/thunder-2008.png", label: "Thunder" },
+];
+
+function getLogoForRow(row) {
+  return HISTORICAL_LOGOS.find((entry) => (
+    entry.champion === row.champion &&
+    row.year >= entry.start &&
+    row.year <= entry.end
+  )) ?? null;
+}
+
+function renderChampion(row) {
+  const logo = getLogoForRow(row);
+  if (!logo) {
+    return `<span class="champion-text">${row.champion_name}</span>`;
+  }
+  return `
+    <span class="champion-cell">
+      <img class="champion-logo" src="./${logo.file}" alt="${row.year} ${logo.label} badge">
+      <span class="champion-text">${row.champion_name}</span>
+    </span>
+  `;
+}
+
 function renderMethodology() {
   const target = document.getElementById("methodology");
   target.innerHTML = `
@@ -15,6 +53,7 @@ function renderMethodology() {
     <p class="formula-block">Difficulty Rating = 0.50 &times; simple_playoff_score + 0.50 &times; simple_contender_dropout_score
 simple_playoff_score = &Sigma;(VORP &times; playoff_availability) / &Sigma;(VORP)
 simple_contender_dropout_score = &Sigma;(VORP &times; season_availability) / &Sigma;(VORP)
+playoff_availability = games_played_in_series / series_length
 season_availability = min(games_played / expected_games, 1.0)</p>
   `;
 }
@@ -37,12 +76,24 @@ function renderStats(summary) {
     },
     {
       label: "Easiest Title",
-      value: summary.easiest_simple_title ? `${summary.easiest_simple_title.year} ${summary.easiest_simple_title.champion_name}` : "N/A",
+      value: summary.easiest_simple_title ? `${summary.easiest_simple_title.year}` : "N/A",
+      valueHtml: summary.easiest_simple_title ? `
+        <span class="summary-title-row">
+          ${renderChampion(summary.easiest_simple_title)}
+          <span class="summary-title-year">${summary.easiest_simple_title.year}</span>
+        </span>
+      ` : null,
       detail: summary.easiest_simple_title ? `Difficulty Rating ${summary.easiest_simple_title.simple_difficulty_index.toFixed(3)}` : "",
     },
     {
       label: "Hardest Title",
-      value: summary.hardest_simple_title ? `${summary.hardest_simple_title.year} ${summary.hardest_simple_title.champion_name}` : "N/A",
+      value: summary.hardest_simple_title ? `${summary.hardest_simple_title.year}` : "N/A",
+      valueHtml: summary.hardest_simple_title ? `
+        <span class="summary-title-row">
+          ${renderChampion(summary.hardest_simple_title)}
+          <span class="summary-title-year">${summary.hardest_simple_title.year}</span>
+        </span>
+      ` : null,
       detail: summary.hardest_simple_title ? `Difficulty Rating ${summary.hardest_simple_title.simple_difficulty_index.toFixed(3)}` : "",
     },
   ];
@@ -50,7 +101,7 @@ function renderStats(summary) {
   container.innerHTML = cards.map((card) => `
     <article class="card">
       <p class="card-label">${card.label}</p>
-      <p class="card-value">${card.value}</p>
+      <p class="card-value">${card.valueHtml ?? card.value}</p>
       <p class="card-note">${card.detail}</p>
     </article>
   `).join("");
@@ -61,7 +112,7 @@ function renderRankingRows(rankings) {
   body.innerHTML = rankings.map((row) => `
     <tr>
       <td>${row.year}</td>
-      <td>${row.champion_name}</td>
+      <td>${renderChampion(row)}</td>
       <td>${row.simple_difficulty_index?.toFixed(3) ?? "N/A"}</td>
       <td>${row.simple_playoff_score?.toFixed(3) ?? "N/A"}</td>
       <td>${row.simple_contender_dropout_score?.toFixed(3) ?? "N/A"}</td>
