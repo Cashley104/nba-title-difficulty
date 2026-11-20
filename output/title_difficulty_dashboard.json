@@ -4,7 +4,7 @@
     "simple_difficulty_index": "simple_difficulty_index = 0.50 * simple_playoff_score + 0.50 * simple_contender_dropout_score",
     "playoff_score": "playoff_score = impact-weighted opponent availability in the champion's actual playoff path",
     "simple_playoff_score": "simple_playoff_score = VORP-weighted opponent availability in the champion's actual playoff path",
-    "series_availability": "series_availability = sum(vorp * games_played) / sum(vorp * series_length)",
+    "series_availability": "Series player-weighted injury-adjusted availability. Injury-supported partial games/minutes availability is raised to exponent 1.35 (3.0 for severe injury); series scores are pooled by player weight.",
     "season_score": "season_score = 0.55 * current_playoff_field_score + 0.45 * prior_year_threat_score",
     "simple_contender_dropout_score": "simple_contender_dropout_score = VORP-weighted availability of prior-year contender stars on teams that fell out of the current playoff field",
     "current_playoff_field_score": "current_playoff_field_score = VORP-weighted regular-season availability of current non-champion playoff-team stars",
