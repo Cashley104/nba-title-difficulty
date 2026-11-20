@@ -47,7 +47,7 @@ function renderMethodology() {
   target.innerHTML = `
     <p class="method-copy">
       The rating gets easier when a champion's playoff opponents lose more VORP to injury and when strong teams from the
-      prior season lose star value badly enough to fall out of the playoff field. This is a model of injury-related availability, not a complete measure of championship difficulty. The injury penalties and 50/50 weighting are modeling choices.
+      prior season lose star value badly enough to fall out of the playoff field. The injury penalties and 50/50 weighting are modeling choices.
     </p>
     <p class="formula-label">Formula</p>
     <p class="formula-block">Difficulty Rating = 0.50 &times; simple_playoff_score + 0.50 &times; simple_contender_dropout_score
@@ -59,7 +59,6 @@ playoff_availability = game_availability by default
 For injury-supported partial availability: min(game_availability, minute_availability)^p
 p = 1.35, or 3.0 for severe injuries
 season_availability = min(games_played / expected_games, 1.0)</p>
-    <p class="method-copy">Availability adjustments rely on the recorded injury inputs. The 2024 and 2025 seasons are flagged for review because of incomplete source inputs; their ratings should be treated as provisional.</p>
   `;
 }
 
